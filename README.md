@@ -25,6 +25,13 @@ editor = Gslide::Editor.new(token)
 presentation = Gslide::Presentation.new(id, auth: editor)
 presentation.get
 #=> parsed json of the Google Slides file
+
+editor = Gslide::Editor.new(token)
+editor.insert_presentation(title: "Once upon a time")
+#=> "14HD3asbaVCkJKHQGJB9FJPqPbuqDkMPzsI4HmXFzYQs"
+id = _
+presentation = Gslide::Presentation.new(id, auth: editor)
+presentation.get
 ```
 
 ## Development
