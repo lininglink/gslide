@@ -10,6 +10,7 @@ Install the gem and add to the application's Gemfile by executing:
 
 ```bash
 bundle add gslide --github 'kangkyu/gslide'
+bundle install
 ```
 
 ## Usage

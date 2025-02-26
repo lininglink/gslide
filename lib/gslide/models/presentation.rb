@@ -12,7 +12,7 @@ module Gslide
         @auth = auth
       end
 
-      # @return [Hash] data from Google Slides
+      # @return [Hash] data from a Google Slides file
       # @see https://developers.google.com/slides/api/reference/rest/v1/presentations/get
       def get
         uri = URI(GOOGLE_SLIDES + "/#{@id}")
