@@ -32,6 +32,38 @@ editor.insert_presentation(title: "Once upon a time")
 id = _
 presentation = Gslide::Presentation.new(id, auth: editor)
 presentation.get
+
+presentation.batch_update({
+  requests: [
+    {
+      createSlide: {
+        slideLayoutReference: {
+          predefinedLayout: "BLANK"
+        }
+      }
+    },
+    {
+      createImage: {
+        url: "https://drive.usercontent.google.com/download?id=1fus5psRLzIJjG3A5GAfbqu22cdEczNZQ&authuser=0",
+        elementProperties: {
+          pageObjectId: "p",
+          size: {
+            height: { magnitude: 200, unit: "PT" },
+            width: { magnitude: 300, unit: "PT" }
+          },
+          transform: {
+            scaleX: 1,
+            scaleY: 1,
+            translateX: 100,
+            translateY: 100,
+            unit: "PT"
+          }
+        }
+      }
+    }
+  ]
+})
+#=> true
 ```
 
 ## Development
