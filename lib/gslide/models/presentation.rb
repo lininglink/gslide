@@ -2,8 +2,6 @@ require "gslide/concerns/requests"
 
 module Gslide
   module Models
-    GOOGLE_SLIDES = "https://slides.googleapis.com/v1/presentations"
-
     class Presentation
       include Concerns::Requests
 
@@ -19,6 +17,10 @@ module Gslide
 
         res = get_request(uri, auth_token: @auth.token)
         JSON(res.body)
+      end
+
+      def link_url
+        "https://docs.google.com/presentation/d/#{@id}/edit"
       end
     end
   end
