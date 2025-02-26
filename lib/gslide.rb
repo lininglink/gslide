@@ -2,7 +2,9 @@
 
 require_relative "gslide/version"
 
+require "gslide/models/models"
+
 module Gslide
   class Error < StandardError; end
-  # Your code goes here...
+
 end
