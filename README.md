@@ -22,18 +22,19 @@ bundle install
 token = "ya29.a0AXeO8..."
 id = "113Xmx0YQc..."
 editor = Gslide::Editor.new(token)
-presentation = Gslide::Presentation.new(id, auth: editor)
-presentation.get
+pres = Gslide::Presentation.new(id, auth: editor)
+pres.get
 #=> parsed json of the Google Slides file
+```
 
+```rb
 editor = Gslide::Editor.new(token)
 editor.insert_presentation(title: "Once upon a time")
-#=> "14HD3asbaVCkJKHQGJB9FJPqPbuqDkMPzsI4HmXFzYQs"
-id = _
-presentation = Gslide::Presentation.new(id, auth: editor)
-presentation.get
+#=> <Gslide::Models::Presentation:0x000000013e6d4108
+#   @id="1itXwmlLbyTRa1QKhrsO16OhJPEJUK6eh2d1nqsQfuqY">
 
-presentation.batch_update({
+pres = _
+pres.batch_update({
   requests: [
     {
       createSlide: {
@@ -41,12 +42,20 @@ presentation.batch_update({
           predefinedLayout: "BLANK"
         }
       }
-    },
+    }
+  ]
+})
+
+pres.get_slide_ids
+#=> ["p", "SLIDES_API1463300837_0"]
+
+pres.batch_update({
+  requests: [
     {
       createImage: {
         url: "https://drive.usercontent.google.com/download?id=1fus5psRLzIJjG3A5GAfbqu22cdEczNZQ&authuser=0",
         elementProperties: {
-          pageObjectId: "p",
+          pageObjectId: "SLIDES_API1463300837_0",
           size: {
             height: { magnitude: 200, unit: "PT" },
             width: { magnitude: 300, unit: "PT" }

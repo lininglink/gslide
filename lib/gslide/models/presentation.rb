@@ -5,6 +5,8 @@ module Gslide
     class Presentation
       include Concerns::Requests
 
+      attr_reader :id
+
       def initialize(id, auth: nil)
         @id = id
         @auth = auth
@@ -36,6 +38,11 @@ module Gslide
           raise Gslide::Error.new(response_body["error"]["message"])
         end
         response_body["presentationId"] == @id
+      end
+
+      def get_slide_ids
+        parsed_body = get
+        parsed_body["slides"].collect { |slide| slide["objectId"] }
       end
     end
   end
