@@ -17,7 +17,7 @@ module Gslide
       end
 
       # @param [Hash] options the body for the POST request.
-      # @return [String] presentation id.
+      # @return [Gslide::Models::Presentation] presentation id.
       # @see https://developers.google.com/slides/api/reference/rest/v1/presentations/create#request-body
       def insert_presentation(options = {})
         uri = URI(GOOGLE_SLIDES + "")
@@ -28,7 +28,7 @@ module Gslide
         if response_body["error"]
           raise Gslide::Error.new(response_body["error"]["message"])
         end
-        response_body["presentationId"]
+        Presentation.new response_body["presentationId"], auth: self
       end
     end
   end
