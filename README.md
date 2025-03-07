@@ -64,10 +64,10 @@ pres.batch_update({
             width: { magnitude: 300, unit: "PT" }
           },
           transform: {
-            scaleX: 1,
-            scaleY: 1,
-            translateX: 100,
-            translateY: 100,
+            scale_x: 1,
+            scale_y: 1,
+            translate_x: 100,
+            translate_y: 100,
             unit: "PT"
           }
         }
