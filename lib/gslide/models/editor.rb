@@ -22,6 +22,7 @@ module Gslide
       def insert_presentation(options = {})
         uri = URI(GOOGLE_SLIDES + "")
 
+        # "title" is the only allowed field in the request body
         res = post_request(uri, auth_token: @token, body: options.to_json)
         response_body = JSON(res.body)
 

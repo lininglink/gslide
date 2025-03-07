@@ -20,7 +20,7 @@ bundle install
 
 ```rb
 token = "ya29.a0AXeO8..."
-id = "113Xmx0YQc..."
+id = "1nNv3fyCIrvAs754Zd5c6klCjMhP7D2rmX3T9nFpjW4Q"
 editor = Gslide::Editor.new(token)
 pres = Gslide::Presentation.new(id, auth: editor)
 pres.get
@@ -32,39 +32,42 @@ editor = Gslide::Editor.new(token)
 editor.insert_presentation(title: "Once upon a time")
 #=> <Gslide::Models::Presentation:0x000000013e6d4108
 #   @id="1itXwmlLbyTRa1QKhrsO16OhJPEJUK6eh2d1nqsQfuqY">
-
 pres = _
+```
+
+```rb
 pres.batch_update({
   requests: [
     {
-      createSlide: {
-        slideLayoutReference: {
-          predefinedLayout: "BLANK"
+      create_slide: {
+        slide_layout_reference: {
+          predefined_layout: "BLANK"
         }
       }
     }
   ]
 })
+#=> true
 
 pres.get_slide_ids
-#=> ["p", "SLIDES_API1463300837_0"]
+#=> ["p", "SLIDES_API778986045_0"]
 
 pres.batch_update({
   requests: [
     {
-      createImage: {
+      create_image: {
         url: "https://drive.usercontent.google.com/download?id=1fus5psRLzIJjG3A5GAfbqu22cdEczNZQ&authuser=0",
-        elementProperties: {
-          pageObjectId: "SLIDES_API1463300837_0",
+        element_properties: {
+          page_object_id: "SLIDES_API778986045_0",
           size: {
             height: { magnitude: 200, unit: "PT" },
             width: { magnitude: 300, unit: "PT" }
           },
           transform: {
-            scaleX: 1,
-            scaleY: 1,
-            translateX: 100,
-            translateY: 100,
+            scale_x: 1,
+            scale_y: 1,
+            translate_x: 100,
+            translate_y: 100,
             unit: "PT"
           }
         }
