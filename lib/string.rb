@@ -23,7 +23,7 @@ class Object
         self.map { |k, v| [blk.call(k), v.convert_keys(&blk)] }.to_h
       else
         self
-     end
+    end
   end
 end
 
