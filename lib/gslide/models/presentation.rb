@@ -30,8 +30,9 @@ module Gslide
       # @see https://developers.google.com/slides/api/reference/rest/v1/presentations/batchUpdate#request-body
       def batch_update(options = {})
         uri = URI(GOOGLE_SLIDES + "/#{@id}:batchUpdate")
+        request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
 
-        res = post_request(uri, auth_token: @auth.token, body: options.to_json)
+        res = post_request(uri, auth_token: @auth.token, body: request_body)
         response_body = JSON(res.body)
 
         if response_body["error"]
