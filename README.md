@@ -4,8 +4,18 @@ Welcome to Gslide! This is an approach to build a Google Slides file for practic
 
 ## Installation
 
-> Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+```sh
+gem install gslide
+```
 
+- Use [bundler](https://bundler.io/)
+
+```bash
+bundle add gslide
+bundle install
+```
+
+- From Github
 Install the gem and add to the application's Gemfile by executing:
 
 ```bash
