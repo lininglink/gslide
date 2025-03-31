@@ -18,7 +18,7 @@ module Gslide
         uri = URI(GOOGLE_SHEETS + "/#{@id}")
 
         res = get_request(uri, auth_token: @auth.token)
-        JSON(res.body)
+        JSON(res.body).convert_keys {|k| k.snake_case.to_sym }
       end
 
       def link_url
@@ -39,6 +39,49 @@ module Gslide
           raise Gslide::Error.new(response_body["error"]["message"])
         end
         response_body["spreadsheetId"] == @id
+      end
+
+      def get_sheets
+        parsed_body = get
+        parsed_body[:sheets].collect { |h| Sheet.new(h) }
+      end
+    end
+
+    class SpreadsheetDraft
+      include Concerns::Requests
+
+      def initialize(auth: nil)
+        @auth = auth
+      end
+
+      def create(options = {})
+        request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
+
+        uri = URI(GOOGLE_SHEETS)
+        res = post_request(uri, auth_token: @auth.token, body: request_body)
+        response_body = JSON(res.body)
+        if response_body["error"]
+          raise Gslide::Error.new(response_body["error"]["message"])
+        end
+        spreadsheet_id = response_body["spreadsheetId"]
+        Spreadsheet.new(spreadsheet_id, auth: @auth)
+      end
+    end
+
+    class Sheet
+      attr_reader :id, :charts
+
+      def initialize(options = {})
+        @id = options[:properties][:sheet_id]
+        @charts = options[:charts].collect { |h| Chart.new(h) } if options[:charts]
+      end
+    end
+
+    class Chart
+      attr_reader :id
+
+      def initialize(options = {})
+        @id = options[:chart_id]
       end
     end
   end

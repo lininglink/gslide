@@ -1,5 +1,6 @@
-require "gslide/models/presentation"
 require "gslide/models/editor"
+require "gslide/models/presentation"
+require "gslide/models/spreadsheet"
 
 module Gslide
   module Models

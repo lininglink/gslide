@@ -18,7 +18,7 @@ module Gslide
         uri = URI(GOOGLE_SLIDES + "/#{@id}")
 
         res = get_request(uri, auth_token: @auth.token)
-        JSON(res.body)
+        JSON(res.body).convert_keys {|k| k.snake_case.to_sym }
       end
 
       def link_url
@@ -43,7 +43,7 @@ module Gslide
 
       def get_slide_ids
         parsed_body = get
-        parsed_body["slides"].collect { |slide| slide["objectId"] }
+        parsed_body[:slides].collect { |slide| slide[:object_id] }
       end
     end
   end
