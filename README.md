@@ -1,3 +1,5 @@
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/gems/gslide)
+
 # Gslide
 
 Welcome to Gslide! This is an approach to build a Google Slides file for practical use.
