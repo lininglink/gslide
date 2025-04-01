@@ -1,4 +1,5 @@
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/gems/gslide)
+[![Gem](https://img.shields.io/gem/v/gslide)](https://rubygems.org/gems/gslide)
 
 # Gslide
 
