@@ -10,11 +10,7 @@ module Gslide
       PRESENTATION_PATTERN = %r[/presentation/d/([a-zA-Z0-9\-_]+)?]
 
       def initialize(id_or_url, auth: nil)
-        @id = if url_id = id_or_url.match(PRESENTATION_PATTERN)
-          url_id[1]
-        else
-          id_or_url
-        end
+        @id = (url_id = id_or_url.match(PRESENTATION_PATTERN)) ? url_id[1] : id_or_url
         @auth = auth
       end
 
