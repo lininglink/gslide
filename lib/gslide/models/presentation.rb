@@ -7,8 +7,10 @@ module Gslide
 
       attr_reader :id
 
-      def initialize(id, auth: nil)
-        @id = id
+      PRESENTATION_PATTERN = %r[/presentation/d/([a-zA-Z0-9\-_]+)?]
+
+      def initialize(id_or_url, auth: nil)
+        @id = (url_id = id_or_url.match(PRESENTATION_PATTERN)) ? url_id[1] : id_or_url
         @auth = auth
       end
 
