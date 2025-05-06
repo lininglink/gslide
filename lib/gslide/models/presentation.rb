@@ -44,9 +44,8 @@ module Gslide
 
           retry
         end
-          # all retries failed, raise exception
+        # all retries failed, raise exception
         raise
-
       end
 
       def get_slide_ids
