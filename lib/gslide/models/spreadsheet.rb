@@ -53,11 +53,8 @@ module Gslide
         request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
 
         uri = URI(GOOGLE_SHEETS)
-        res = post_request(uri, auth_token: @auth.token, body: request_body)
-        response_body = JSON(res.body)
-        if response_body["error"]
-          raise Gslide::Error.new(response_body["error"]["message"])
-        end
+        response_body = post_request(uri, auth_token: @auth.token, body: request_body)
+
         spreadsheet_id = response_body["spreadsheetId"]
         Spreadsheet.new(spreadsheet_id, auth: @auth)
       end
