@@ -1,3 +1,7 @@
+## [0.1.2] - 2025-05-09
+
+- Add `Gslide::HTTPError`, `Gslide::UnauthorizedError` and `Gslide::QuotaExceededError` #10
+
 ## [0.1.1] - 2025-04-14
 
 - Use a regular expression for finding a presentation id from url #8
