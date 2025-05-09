@@ -23,12 +23,7 @@ module Gslide
         uri = URI(GOOGLE_SLIDES + "")
 
         # "title" is the only allowed field in the request body
-        res = post_request(uri, auth_token: @token, body: options.to_json)
-        response_body = JSON(res.body)
-
-        if response_body["error"]
-          raise Gslide::Error.new(response_body["error"]["message"])
-        end
+        response_body = post_request(uri, auth_token: @token, body: options.to_json)
         Presentation.new response_body["presentationId"], auth: self
       end
     end

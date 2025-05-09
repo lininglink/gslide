@@ -19,8 +19,8 @@ module Gslide
       def get
         uri = URI(GOOGLE_SLIDES + "/#{@id}")
 
-        res = get_request(uri, auth_token: @auth.token)
-        JSON(res.body).convert_keys {|k| k.snake_case.to_sym }
+        response_body = get_request(uri, auth_token: @auth.token)
+        response_body.convert_keys {|k| k.snake_case.to_sym }
       end
 
       def link_url
@@ -36,23 +36,16 @@ module Gslide
         uri = URI(GOOGLE_SLIDES + "/#{@id}:batchUpdate")
         request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
 
-        res = post_request(uri, auth_token: @auth.token, body: request_body)
-        response_body = JSON(res.body)
-
-        if response_body["error"]
-          raise Gslide::Error.new(response_body["error"]["message"])
-        end
+        response_body = post_request(uri, auth_token: @auth.token, body: request_body)
         response_body["presentationId"] == @id
-
-      rescue Gslide::Error => e
-        if e.message =~ /Quota exceeded/ && (retries += 1) < 3
-          # "Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'slides.googleapis.com' for consumer 'project_number:012345678901'."
+      rescue Gslide::QuotaExceededError
+        if (retries += 1) < 3
           sleep 10 + retries * retries * 10
 
           retry
         end
-        # all retries failed, re-raise exception
-        raise e
+        # all retries failed, raise exception
+        raise
       end
 
       def get_slide_ids

@@ -7,5 +7,7 @@ require "gslide/models/models"
 
 module Gslide
   class Error < StandardError; end
-
+  class HTTPError < Error; end
+  class UnauthorizedError < HTTPError; end
+  class QuotaExceededError < HTTPError; end
 end

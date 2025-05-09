@@ -17,8 +17,8 @@ module Gslide
       def get
         uri = URI(GOOGLE_SHEETS + "/#{@id}")
 
-        res = get_request(uri, auth_token: @auth.token)
-        JSON(res.body).convert_keys {|k| k.snake_case.to_sym }
+        response_body = get_request(uri, auth_token: @auth.token)
+        response_body.convert_keys {|k| k.snake_case.to_sym }
       end
 
       def link_url
@@ -32,12 +32,7 @@ module Gslide
         uri = URI(GOOGLE_SHEETS + "/#{@id}:batchUpdate")
         request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
 
-        res = post_request(uri, auth_token: @auth.token, body: request_body)
-        response_body = JSON(res.body)
-
-        if response_body["error"]
-          raise Gslide::Error.new(response_body["error"]["message"])
-        end
+        response_body = post_request(uri, auth_token: @auth.token, body: request_body)
         response_body["spreadsheetId"] == @id
       end
 
@@ -58,11 +53,8 @@ module Gslide
         request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
 
         uri = URI(GOOGLE_SHEETS)
-        res = post_request(uri, auth_token: @auth.token, body: request_body)
-        response_body = JSON(res.body)
-        if response_body["error"]
-          raise Gslide::Error.new(response_body["error"]["message"])
-        end
+        response_body = post_request(uri, auth_token: @auth.token, body: request_body)
+
         spreadsheet_id = response_body["spreadsheetId"]
         Spreadsheet.new(spreadsheet_id, auth: @auth)
       end
