@@ -40,6 +40,23 @@ module Gslide
         parsed_body = get
         parsed_body[:sheets].collect { |h| Sheet.new(h) }
       end
+
+      # @param [Hash] options the request body.
+      # @see https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/append
+      def values_append(notation, options = {})
+        uri = url_escape_uri(GOOGLE_SHEETS + "/#{@id}/values/'#{notation}':append?valueInputOption=USER_ENTERED")
+        request_body = options.convert_keys { |k| k.to_s.lower_camel_case }.to_json
+
+        response_body = post_request(uri, auth_token: @auth.token, body: request_body)
+        response_body
+      end
+
+      private
+
+      def url_escape_uri(uri_string)
+        parser = URI::Parser.new
+        URI parser.escape(uri_string)
+      end
     end
 
     class SpreadsheetDraft
@@ -61,10 +78,11 @@ module Gslide
     end
 
     class Sheet
-      attr_reader :id, :charts
+      attr_reader :id, :title, :charts
 
       def initialize(options = {})
         @id = options[:properties][:sheet_id]
+        @title = options[:properties][:title]
         @charts = options[:charts].collect { |h| Chart.new(h) } if options[:charts]
       end
     end
