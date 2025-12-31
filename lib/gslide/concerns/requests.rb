@@ -1,6 +1,8 @@
 require "net/http"
 
 module Gslide
+
+  # @private
   module Concerns
     module Requests
       def get_request(uri, auth_token: "")
