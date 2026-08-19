@@ -7,10 +7,17 @@ module Gslide
 
       attr_reader :id
 
-      PRESENTATION_PATTERN = %r[/presentation/d/([a-zA-Z0-9\-_]+)?]
+      PRESENTATION_ID_PATTERN = /[a-zA-Z0-9\-_]+/
+      PRESENTATION_PATTERN = %r[/presentation/d/(#{PRESENTATION_ID_PATTERN})?]
+
+      # @param [String] id_or_url a presentation id, or a sharing url holding one.
+      # @return [String] the presentation id, or the argument when it is not a url.
+      def self.file_id_in(id_or_url)
+        (url_id = id_or_url.match(PRESENTATION_PATTERN)) ? url_id[1] : id_or_url
+      end
 
       def initialize(id_or_url, auth: nil)
-        @id = (url_id = id_or_url.match(PRESENTATION_PATTERN)) ? url_id[1] : id_or_url
+        @id = self.class.file_id_in(id_or_url)
         @auth = auth
       end
 
