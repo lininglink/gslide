@@ -33,6 +33,26 @@ class TestGslide < Minitest::Test
     assert_equal presentation_id, Gslide::Presentation.file_id_in(presentation_id)
   end
 
+  def test_generate_object_id
+    id = Gslide::Presentation.generate_object_id
+
+    assert_equal 12, id.length
+    assert_match(/\A#{Gslide::Presentation::OBJECT_ID_PATTERN}\z/, id)
+    refute_equal id, Gslide::Presentation.generate_object_id
+  end
+
+  def test_generate_object_id_of_any_allowed_length
+    assert_equal 5, Gslide::Presentation.generate_object_id(5).length
+    assert_equal 50, Gslide::Presentation.generate_object_id(50).length
+    assert_raises(ArgumentError) { Gslide::Presentation.generate_object_id(4) }
+    assert_raises(ArgumentError) { Gslide::Presentation.generate_object_id(51) }
+  end
+
+  def test_object_id_pattern
+    assert_match(/\A#{Gslide::Presentation::OBJECT_ID_PATTERN}\z/, "_aZ09-:x")
+    refute_match(/\A#{Gslide::Presentation::OBJECT_ID_PATTERN}\z/, "-NxhA9ykPiQ1")
+  end
+
   def test_presentation_id_pattern_matches_a_file_id
     assert_match(/\A#{Gslide::Presentation::PRESENTATION_ID_PATTERN}\z/, "1W11pzmSEH7EoZ-XiMITa_cOM")
     refute_match(/\A#{Gslide::Presentation::PRESENTATION_ID_PATTERN}\z/, "javascript:alert(1)")

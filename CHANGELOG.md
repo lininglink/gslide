@@ -1,3 +1,7 @@
+## [Unreleased]
+
+- Add `Gslide::Presentation.generate_object_id` and `Gslide::Presentation::OBJECT_ID_PATTERN`, for IDs of new pages and page elements
+
 ## [0.1.3] - 2026-08-19
 
 - Add `Gslide::Presentation::PRESENTATION_ID_PATTERN` and `Gslide::Presentation.file_id_in`, so callers can validate a presentation id without repeating the pattern

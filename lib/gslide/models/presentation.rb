@@ -1,3 +1,4 @@
+require "securerandom"
 require "gslide/concerns/requests"
 
 module Gslide
@@ -9,6 +10,22 @@ module Gslide
 
       PRESENTATION_ID_PATTERN = /[a-zA-Z0-9\-_]+/
       PRESENTATION_PATTERN = %r[/presentation/d/(#{PRESENTATION_ID_PATTERN})?]
+
+      # An object ID (for a page, shape or table) starts with a word character,
+      # followed by word characters, dashes or colons; 5 to 50 characters long.
+      # @see https://developers.google.com/slides/api/reference/rest/v1/presentations.pages#Page.FIELDS.object_id
+      OBJECT_ID_PATTERN = /[a-zA-Z0-9_][a-zA-Z0-9_\-:]*/
+      OBJECT_ID_LENGTHS = 5..50
+
+      # @param [Integer] length from 5 to 50.
+      # @return [String] a random object ID for a new page element, e.g. "aZ3kq09XbP1t".
+      def self.generate_object_id(length = 12)
+        unless OBJECT_ID_LENGTHS.cover?(length)
+          raise ArgumentError, "object ID length must be within #{OBJECT_ID_LENGTHS}, not #{length}"
+        end
+
+        SecureRandom.alphanumeric(length)
+      end
 
       # @param [String] id_or_url a presentation id, or a sharing url holding one.
       # @return [String] the presentation id, or the argument when it is not a url.
