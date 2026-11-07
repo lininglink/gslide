@@ -64,7 +64,7 @@ module Gslide
         response_body["presentationId"] == @id
       rescue Gslide::QuotaExceededError
         if (retries += 1) < 3
-          sleep 10 + retries * retries * 10
+          sleep retry_delay(retries)
 
           retry
         end
