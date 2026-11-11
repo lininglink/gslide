@@ -1,6 +1,12 @@
 ## [Unreleased]
 
 - Add `Gslide::Presentation.generate_object_id` and `Gslide::Presentation::OBJECT_ID_PATTERN`, for IDs of new pages and page elements
+- Require `json`, so gslide works outside Rails
+- Add `ForbiddenError` (403), `NotFoundError` (404), `ServerError` (5xx) and `TimeoutError`
+- Raise `Gslide::ServerError` instead of `JSON::ParserError` when an error response is not JSON, such as an HTML 502 page
+- Include Google's message in `Gslide::QuotaExceededError`; treat Drive's 403 rate-limit errors as quota errors
+- Retry GET requests on quota errors, 5xx and timeouts (3 attempts); POST requests are not retried, except `batch_update` on quota errors as before
+- Set open (10 s) and read (60 s) timeouts
 
 ## [0.1.3] - 2026-08-19
 
