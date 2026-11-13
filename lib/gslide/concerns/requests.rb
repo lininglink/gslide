@@ -38,6 +38,15 @@ module Gslide
         perform_request(uri, req, auth_token)
       end
 
+      # PATCH is not retried either, for the same reason as POST.
+      def patch_request(uri, auth_token: "", body: {})
+        req = Net::HTTP::Patch.new(uri.to_s)
+        req.initialize_http_header 'Content-Type' => 'application/json'
+        req.body = body
+
+        perform_request(uri, req, auth_token)
+      end
+
       private
 
       # Seconds to wait after failed attempt number +attempts+: 20, 50, 100...

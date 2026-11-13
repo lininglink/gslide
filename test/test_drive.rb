@@ -42,6 +42,26 @@ class TestDrive < Minitest::Test
     assert_equal({ "name" => "Copy" }, drive.requests.first[:body])
   end
 
+  def test_rename
+    drive = RecordingDrive.new([[200, '{"id": "deck1", "name": "Monthly Report"}']])
+    assert_equal true, drive.rename("deck1", name: "Monthly Report")
+
+    request = drive.requests.first
+    assert_equal "PATCH", request[:method]
+    assert_equal "https://www.googleapis.com/drive/v3/files/deck1?supportsAllDrives=true", request[:uri]
+    assert_equal({ "name" => "Monthly Report" }, request[:body])
+  end
+
+  def test_rename_errors_are_not_retried
+    drive = RecordingDrive.new([[503, "<html>Service Unavailable</html>"], [200, "{}"]])
+    assert_raises(Gslide::ServerError) { drive.rename("deck1", name: "x") }
+    assert_equal 1, drive.requests.size
+
+    drive = RecordingDrive.new([])
+    assert_raises(ArgumentError) { drive.rename("../x", name: "x") }
+    assert_empty drive.requests
+  end
+
   def test_errors_are_gslide_errors_and_not_retried
     drive = RecordingDrive.new([[404, '{"error": {"message": "File not found: tmpl_1."}}']])
     error = assert_raises(Gslide::NotFoundError) { drive.copy("tmpl_1", name: "x") }

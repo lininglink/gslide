@@ -92,12 +92,14 @@ pres.batch_update({
 #=> true
 ```
 
-Copy a template into a folder. Works with the `drive.file` scope for files the user picked (for example with Google Picker) or the app created.
+Copy a template into a folder, and rename a file. Works with the `drive.file` scope for files the user picked (for example with Google Picker) or the app created.
 
 ```rb
 drive = Gslide::Drive.new(auth: editor)
 deck_id = drive.copy(template_id, name: "Report", folder_id: folder_id)
 #=> "1itXwmlLbyTRa1QKhrsO16OhJPEJUK6eh2d1nqsQfuqY"
+drive.rename(deck_id, name: "Monthly Report")
+#=> true
 ```
 
 ## Development
