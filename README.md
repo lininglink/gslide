@@ -92,6 +92,14 @@ pres.batch_update({
 #=> true
 ```
 
+Copy a template into a folder. Works with the `drive.file` scope for files the user picked (for example with Google Picker) or the app created.
+
+```rb
+drive = Gslide::Drive.new(auth: editor)
+deck_id = drive.copy(template_id, name: "Report", folder_id: folder_id)
+#=> "1itXwmlLbyTRa1QKhrsO16OhJPEJUK6eh2d1nqsQfuqY"
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

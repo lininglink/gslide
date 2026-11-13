@@ -7,6 +7,7 @@
 - Include Google's message in `Gslide::QuotaExceededError`; treat Drive's 403 rate-limit errors as quota errors
 - Retry GET requests on quota errors, 5xx and timeouts (3 attempts); POST requests are not retried, except `batch_update` on quota errors as before
 - Set open (10 s) and read (60 s) timeouts
+- Add `Gslide::Models::Drive#copy`, e.g. a template into a folder (works with the `drive.file` scope and shared drives)
 
 ## [0.1.3] - 2026-08-19
 
