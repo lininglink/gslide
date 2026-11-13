@@ -62,6 +62,30 @@ class TestDrive < Minitest::Test
     assert_empty drive.requests
   end
 
+  def test_trash
+    drive = RecordingDrive.new([[200, '{"id": "deck1", "trashed": true}']])
+    assert_equal true, drive.trash("deck1")
+
+    request = drive.requests.first
+    assert_equal "PATCH", request[:method]
+    assert_equal "https://www.googleapis.com/drive/v3/files/deck1?supportsAllDrives=true", request[:uri]
+    assert_equal({ "trashed" => true }, request[:body])
+  end
+
+  def test_trash_of_a_file_already_gone_counts_as_done
+    drive = RecordingDrive.new([[404, '{"error": {"message": "File not found: deck1."}}']])
+    assert_equal true, drive.trash("deck1")
+  end
+
+  def test_trash_other_errors_are_raised_and_ids_checked_first
+    drive = RecordingDrive.new([[403, '{"error": {"message": "The user does not have sufficient permissions"}}']])
+    assert_raises(Gslide::ForbiddenError) { drive.trash("deck1") }
+
+    drive = RecordingDrive.new([])
+    assert_raises(ArgumentError) { drive.trash("../x") }
+    assert_empty drive.requests
+  end
+
   def test_errors_are_gslide_errors_and_not_retried
     drive = RecordingDrive.new([[404, '{"error": {"message": "File not found: tmpl_1."}}']])
     error = assert_raises(Gslide::NotFoundError) { drive.copy("tmpl_1", name: "x") }

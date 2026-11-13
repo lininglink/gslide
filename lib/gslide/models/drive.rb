@@ -2,12 +2,14 @@ require "gslide/concerns/requests"
 
 module Gslide
   module Models
-    # Drive calls for decks: copy a template (into a folder), and rename a file. Works with the
-    # narrow `drive.file` scope for files the user picked or the app created, and with shared drives.
+    # Drive calls for decks: copy a template (into a folder), rename a file, and trash a file.
+    # Works with the narrow `drive.file` scope for files the user picked or the app created, and
+    # with shared drives.
     #
     #   drive = Gslide::Models::Drive.new(auth: editor)
     #   deck_id = drive.copy(template_id, name: "Monthly Report (draft)", folder_id: folder_id)
     #   drive.rename(deck_id, name: "Monthly Report")
+    #   drive.trash(deck_id)
     class Drive
       include Concerns::Requests
 
@@ -37,6 +39,18 @@ module Gslide
       def rename(file_id, name:)
         uri = URI(GOOGLE_DRIVE + "/#{checked(file_id)}?supportsAllDrives=true")
         patch_request(uri, auth_token: @auth.token, body: { name: name }.to_json)
+        true
+      end
+
+      # Moves the file to the trash (it can be restored from there for 30 days).
+      # @param [String] file_id the file to trash, e.g. a deck left by a failed run.
+      # @return [true] also when the file is already gone.
+      # @see https://developers.google.com/workspace/drive/api/reference/rest/v3/files/update
+      def trash(file_id)
+        uri = URI(GOOGLE_DRIVE + "/#{checked(file_id)}?supportsAllDrives=true")
+        patch_request(uri, auth_token: @auth.token, body: { trashed: true }.to_json)
+        true
+      rescue Gslide::NotFoundError
         true
       end
 
