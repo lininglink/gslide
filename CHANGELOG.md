@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.2.0] - 2026-11-14
 
 - Add `Gslide::Presentation.generate_object_id` and `Gslide::Presentation::OBJECT_ID_PATTERN`, for IDs of new pages and page elements
 - Require `json`, so gslide works outside Rails
